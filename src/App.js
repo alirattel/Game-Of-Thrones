@@ -1,23 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import axios from 'axios';
+import { useState , useEffect } from 'react';
 
-function App() {
+import './App.css';
+import Header from './components/Header';
+import Characters from './components/Characters';
+import Youtube from './components/Youtube';
+
+const  App = () => {
+  const [items, setItems] = useState([]);
+  const [Loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      const result = await axios('https://thronesapi.com/api/v2/Characters')
+      console.log(result.data);
+      setItems(result.data);
+      setLoading(false);
+    }
+    fetchItems();
+  },[])
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+      <Youtube embedId='KPLWWIOCOOQ' />
+      <h2 className='GOT chara'>Charcters Of series :</h2>
+      <Characters Loading = {Loading} items = {items} />
+      <h3>made by Ali Ratel 2022</h3>
     </div>
   );
 }
